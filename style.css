@@ -99,6 +99,7 @@
   align-items: center;
   margin: 10px;
   height: 60px;
+  overflow: auto;
 }
 .delete-task {
   border: 0;
