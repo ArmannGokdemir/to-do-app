@@ -20,11 +20,19 @@ const init = function () {
 };
 init();
 
+const addDelete = function (item) {
+  const closeBtn = document.createElement("button");
+  closeBtn.classList.add("delete-task");
+  closeBtn.addEventListener("click", deleteTask);
+  closeBtn.textContent = "X";
+  item.append(closeBtn);
+};
 const addEvent = function () {
   if (taskInput.value) {
     const li = document.createElement("li");
     li.textContent = taskInput.value;
     list.append(li);
+    addDelete(li);
     taskList.set(taskInput.value, taskInput.value);
     // add task to local storage
     localStorage.setItem(
@@ -52,11 +60,7 @@ const addClose = () => {
   const allItems = document.querySelectorAll("li");
 
   for (const item of allItems) {
-    const closeBtn = document.createElement("button");
-    closeBtn.classList.add("delete-task");
-    closeBtn.addEventListener("click", deleteTask);
-    closeBtn.textContent = "X";
-    item.append(closeBtn);
+    addDelete(item);
   }
 };
 addClose();
