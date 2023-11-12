@@ -101,18 +101,28 @@
   height: 60px;
   overflow: auto;
 }
+
+.hidden {
+  display: none !important;
+}
+
+.completed:not(.delete-task) {
+  text-decoration: line-through;
+}
+.completedItem {
+  background-color: grey !important;
+}
 .delete-task {
   border: 0;
   width: 70px;
   height: 100%;
+  text-decoration: none !important;
+  z-index: 3;
   background-color: transparent;
   font-size: 24px;
   color: black;
 }
 
-.hidden {
-  display: none !important;
-}
 ::-webkit-scrollbar {
   width: 10px;
 }
