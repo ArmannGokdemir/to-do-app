@@ -93,10 +93,7 @@ const addEvent = function () {
         ? "white"
         : "black";
       taskList.set(
-        li.firstChild.textContent.slice(
-          0,
-          li.firstChild.textContent.length - 1
-        ),
+        li.firstChild.textContent,
         li.classList.contains("completedItem")
       );
       localStorage.setItem(
