@@ -15,7 +15,23 @@ const addDelete = function (item) {
   item.append(closeBtn);
   // item.insertAdjacentElement('afterend', closeBtn);
 };
-
+const deleteTask = function (e) {
+  console.log("delete", e.target);
+  if (e.target.classList.contains("delete-task")) {
+    taskList.delete(
+      this.parentNode.textContent.slice(
+        0,
+        this.parentNode.textContent.length - 1
+      )
+    );
+    console.log("sildim");
+    localStorage.setItem(
+      "tasks",
+      JSON.stringify(Array.from(taskList.entries()))
+    );
+    this.parentNode.remove();
+  }
+};
 const init = function () {
   // localStorage.clear();
   taskList = new Map(JSON.parse(localStorage.getItem("tasks"))) || new Map();
@@ -31,15 +47,22 @@ const init = function () {
     li.classList.add("task-item");
     //add span
     li.append(span);
-    if (isComplete) li.classList.add("completed");
+    addDelete(li);
+    if (isComplete) {
+      span.classList.add("completed");
+      li.classList.add("completedItem");
+      li.lastChild.style.color = "white";
+    }
     li.addEventListener("click", (e) => {
       if (e.target.classList.contains("task-item")) {
+        console.log("na");
         li.firstChild.classList.toggle("completed");
         li.classList.toggle("completedItem");
-        li.lastChild.style.color = li.classList.contains("completedItem")
+        console.log(li.lastChild);
+        li.lastChild.style.color = li.firstChild.classList.contains("completed")
           ? "white"
           : "black";
-        taskList.set(task, li.classList.contains("completed"));
+        taskList.set(task, li.firstChild.classList.contains("completed"));
         localStorage.setItem(
           "tasks",
           JSON.stringify(Array.from(taskList.entries()))
@@ -61,6 +84,7 @@ const addEvent = function () {
 
     li.classList.add("task-item");
     li.appendChild(span);
+    addDelete(li);
     li.addEventListener("click", () => {
       li.firstChild.classList.toggle("completed");
       li.classList.toggle("completedItem");
@@ -69,8 +93,11 @@ const addEvent = function () {
         ? "white"
         : "black";
       taskList.set(
-        li.textContent.slice(0, li.textContent.length - 1),
-        li.classList.contains("completed")
+        li.firstChild.textContent.slice(
+          0,
+          li.firstChild.textContent.length - 1
+        ),
+        li.classList.contains("completedItem")
       );
       localStorage.setItem(
         "tasks",
@@ -78,9 +105,9 @@ const addEvent = function () {
       );
       console.log(taskList);
     });
+
     console.log(taskList);
     list.append(li);
-    addDelete(li);
 
     taskList.set(taskInput.value, false);
     // add task to local storage
@@ -94,33 +121,16 @@ const addEvent = function () {
     alert("Task name cant be empty");
   }
 };
-const deleteTask = function (e) {
-  console.log("delete", e.target);
-  if (e.target.classList.contains("delete-task")) {
-    taskList.delete(
-      this.parentNode.textContent.slice(
-        0,
-        this.parentNode.textContent.length - 1
-      )
-    );
-    console.log("sildim");
-    localStorage.setItem(
-      "tasks",
-      JSON.stringify(Array.from(taskList.entries()))
-    );
-    this.parentNode.remove();
-  }
-};
 
 btnAdd.addEventListener("click", addEvent);
 
-const addClose = () => {
-  const allItems = document.querySelectorAll("li");
+// const addClose = () => {
+//   const allItems = document.querySelectorAll("li");
 
-  for (const item of allItems) {
-    addDelete(item);
-  }
-};
+//   for (const item of allItems) {
+//     addDelete(item);
+//   }
+// };
 addClose();
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter") addEvent();
